@@ -19,31 +19,31 @@ Generate a PKCS #7 (.p7b) certificate chain.
 7. The Root CA will be called 'AMS Root CA'. Intermediary will be called 'AMS Intermediate CA'. The leaf will be named based on CSR from HANA/NW.
 
 Create the private key for the root CA
-> `openssl genrsa -out root.key 2048`
+>`openssl genrsa -out root.key 2048`
 
 Create the csr for the Root CA
-`openssl req -new -key root.key -out root.csr -config root_req.config`
+>`openssl req -new -key root.key -out root.csr -config root_req.config`
 
 Create the root CA cert
-`openssl ca -in root.csr -out root.pem -config root.config -selfsign -extfile ca.ext -days 1095`     
+>`openssl ca -in root.csr -out root.pem -config root.config -selfsign -extfile ca.ext -days 1095`     
 
 Create the private key for the intermediate CA
-`openssl genrsa -out intermediate.key 2048`               
+>`openssl genrsa -out intermediate.key 2048`               
 
 Create the csr for the intermediate CA
-`openssl req -new -key intermediate.key -out intermediate.csr -config intermediate_req.config`
+>`openssl req -new -key intermediate.key -out intermediate.csr -config intermediate_req.config`
 
 Create the intermediate CA cert
-`openssl ca -in intermediate.csr -out intermediate.pem -config root.config  -extfile ca.ext -days 730`       
+>`openssl ca -in intermediate.csr -out intermediate.pem -config root.config  -extfile ca.ext -days 730`       
 
 leaf_server.csr represents the CSR from sapgenpse(HANA) or STRUST(NetWeaver)
-`openssl ca -in leaf_server.csr -out leaf.pem -config intermediate.config -days 365`         
+>`openssl ca -in leaf_server.csr -out leaf.pem -config intermediate.config -days 365`         
 
 verify the certificate chain
-`openssl verify -x509_strict -CAfile root.pem -untrusted intermediate.pem  leaf.pem`                 
+>`openssl verify -x509_strict -CAfile root.pem -untrusted intermediate.pem  leaf.pem`                 
 
 Create a chained certificate by combining the Root, Itermediate and the leaf(server) certificate
-`openssl crl2pkcs7 -nocrl -certfile leaf.pem -out leaf.p7b -certfile root.pem -certfile intermediate.pem`
+>`openssl crl2pkcs7 -nocrl -certfile leaf.pem -out leaf.p7b -certfile root.pem -certfile intermediate.pem`
 
 leaf.p7b is the certificate chain.
 
