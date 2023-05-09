@@ -19,7 +19,7 @@ Generate a PKCS #7 (.p7b) certificate chain.
 7. The Root CA will be called 'AMS Root CA'. Intermediary will be called 'AMS Intermediate CA'. The leaf will be named based on CSR from HANA/NW.
 
 Create the private key for the root CA
-> openssl genrsa -out root.key 2048
+> `openssl genrsa -out root.key 2048`
 
 Create the csr for the Root CA
 `openssl req -new -key root.key -out root.csr -config root_req.config`
